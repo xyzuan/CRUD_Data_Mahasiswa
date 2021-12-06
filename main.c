@@ -24,7 +24,7 @@ int main(){
         printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" , nim_duplicate);
         for( list = 1; list <= jmlh_mhs; list++){
             duplicate_check = strcmp(nim_duplicate,db_nim[list]);
-        }
+        }   strcpy(db_nim[jmlh_mhs+1], nim_duplicate);
         
         if ( duplicate_check < 1){
             jmlh_mhs = jmlh_mhs - 1;
@@ -32,21 +32,22 @@ int main(){
             printf("\n Inputan NIM tidak boleh duplikat.\n");
             printf("\n --------------------\n");
         
-        } else if(strlen(db_nim[jmlh_mhs+1]) <= 10){
-            strcpy(db_nim[jmlh_mhs+1], nim_duplicate);
+        } else if (strlen(db_nim[jmlh_mhs+1]) > 10){
+            jmlh_mhs = jmlh_mhs - 1;
+            printf("\n --------------------\n");
+            printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
+            printf("\n --------------------\n");
+
+        } else {
             printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", db_nama[jmlh_mhs]);
             printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" ,db_kelas[jmlh_mhs]);
             printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" ,db_dosen[jmlh_mhs]);
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Tambah.\n");
             printf("\n --------------------\n");
-        
-        } else if (strlen(db_nim[jmlh_mhs+1]) >= 10){
-            printf("\n --------------------\n");
-            printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
-            printf("\n --------------------\n");
-        } 
-        printf(" Tekan enter untuk kembali ke menu..."); getch(); goto menu;        
+        }
+        printf(" Tekan enter untuk kembali ke menu...");
+        getch(); goto menu;        
         break;
     case 2:
         system("cls");
