@@ -2,13 +2,11 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
-#include <stdbool.h>
 
 int pil_menu;
 int jmlh_mhs, list, d;
 char nim_jmlh_inpt, pil_update[10];
 char db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
-bool unavailable = false;
 
 int main(){
 
@@ -40,7 +38,7 @@ int main(){
             printf(" Data Tidak Tersedia.");
         } else {
             list = 1;
-            while(list<=jmlh_mhs){
+            while(list <= jmlh_mhs){
                 printf(" == %d ==", list);
                 printf("\n\n NIM Praktikan\t\t\t: %s", db_nim[list]);
                 printf("\n\n Nama Praktikan\t\t\t: %s", db_nama[list]);
@@ -58,8 +56,8 @@ int main(){
         printf(" === Update Data ===\n\n");
         printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",pil_update);
         list=1; d=0;
-        while(list<=jmlh_mhs && d==0){
-            if(strcmp(pil_update,db_nim[list])==0){
+        while(list <= jmlh_mhs && d == 0){
+            if(strcmp(pil_update,db_nim[list]) == 0){
                 d++;
             }
             list++;
@@ -83,7 +81,7 @@ int main(){
         printf(" === Delete Data ===\n\n");
         printf("\n\n Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",pil_update);
         list=1; d=0;
-        while(list<=jmlh_mhs && d==0){
+        while(list <= jmlh_mhs && d ==0){
             if(strcmp(pil_update,db_nim[list])==0){
                 d++;
             }
@@ -95,7 +93,7 @@ int main(){
             printf("\n --------------------\n");
         }else{
             list--;
-            while(list<=jmlh_mhs){
+            while(list <= jmlh_mhs){
                 strcpy(db_nim[list],db_nim[list+1]);
                 strcpy(db_nama[list],db_nama[list+1]);
                 strcpy(db_kelas[list],db_kelas[list+1]);
