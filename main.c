@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <conio.h>
+#include <stdbool.h>
 
 int pil_menu;
 int jmlh_mhs = 0, list, d;
 char nim_jmlh_inpt, pil_update[10];
 char db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
+bool unavailable = false;
 
 int main(){
 
@@ -130,8 +132,14 @@ int main(){
                 printf("\n\n Nama Praktikan\t\t\t: %s", db_nama[list]);
                 printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas[list]);
                 printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen[list]);
+                unavailable = true;
             }
         }
+
+        if(!unavailable){
+            printf(" \nData tidak ditemukan");
+        }
+
         printf("\n\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu;
         break;
