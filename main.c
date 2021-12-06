@@ -22,12 +22,18 @@ int main(){
         jmlh_mhs = jmlh_mhs + 1;
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" ,db_nim[jmlh_mhs]);
-        printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", db_nama[jmlh_mhs]);
-        printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" ,db_kelas[jmlh_mhs]);
-        printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" ,db_dosen[jmlh_mhs]);
-        printf("\n --------------------\n");
-        printf("\n Data Berhasil di Tambah.\n");
-        printf("\n --------------------\n");
+        if(strlen(db_nim[jmlh_mhs]) <= 10){
+            printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", db_nama[jmlh_mhs]);
+            printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" ,db_kelas[jmlh_mhs]);
+            printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" ,db_dosen[jmlh_mhs]);
+            printf("\n --------------------\n");
+            printf("\n Data Berhasil di Tambah.\n");
+            printf("\n --------------------\n");
+        } else {
+            printf("\n --------------------\n");
+            printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
+            printf("\n --------------------\n");
+        }
         printf(" Tekan enter untuk kembali ke menu...");
         getch(); goto menu;        
         break;
