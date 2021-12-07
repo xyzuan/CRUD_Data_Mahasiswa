@@ -139,9 +139,7 @@ int main(){
             printf("\n Nama Praktikan\t\t\t: %s", db_nama[list]);
             printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas[list]);
             printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen[list]);
-            printf("\n --------------------\n");
-            printf("\n Data di Temukan.\n");
-            printf("\n --------------------\n");
+            printf("\n\n");
         }
         printf(" Tekan enter untuk kembali ke menu...");
         getch(); goto menu;
