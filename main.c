@@ -146,7 +146,12 @@ int main(){
         printf(" Tekan enter untuk kembali ke menu...");
         getch(); goto menu;
         break;
+    case 6:
+        return(0);
     default:
+        system("cls");
+        printf(" Inputan anda salah...\n Tekan enter untuk kembali ke menu...");
+        getch(); goto menu;
         break;
     }
 
