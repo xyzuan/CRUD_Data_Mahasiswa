@@ -40,19 +40,19 @@ int main(){
     case 2:
         system("cls");
         printf("\n === List Data ===\n\n");
-        if( jmlh_mhs < 1){
-            printf(" Data Tidak Tersedia.");
-        } else {
-            list = 1;
-            while(list <= jmlh_mhs){
+        if( jmlh_mhs > 1){
+            for(list = 1; list <= jmlh_mhs; list++){
                 printf(" == %d ==", list);
                 printf("\n\n NIM Praktikan\t\t\t: %s", db_nim[list]);
                 printf("\n\n Nama Praktikan\t\t\t: %s", db_nama[list]);
                 printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas[list]);
                 printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen[list]);
                 printf("\n\n --------------------\n\n");
-                list++;
             }
+        } else {
+            printf("\n --------------------\n");
+            printf("\n Data Tidak Tersedia.\n");
+            printf("\n --------------------\n");
         }
         printf(" Tekan enter untuk kembali ke menu...");
         getch(); goto menu;
