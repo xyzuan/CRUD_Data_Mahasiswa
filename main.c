@@ -103,12 +103,11 @@ int main(){
             printf("\n --------------------\n");
         } else {
             list--;
-            while(list <= jmlh_mhs){
+            for(list = list; list <= jmlh_mhs; list++){
                 strcpy(db_nim[list], db_nim[list+1]);
                 strcpy(db_nama[list],db_nama[list+1]);
                 strcpy(db_kelas[list],db_kelas[list+1]);
                 strcpy(db_dosen[list],db_dosen[list+1]);
-                list++;
             }
             list--;
             strcpy(db_nim[list],""); jmlh_mhs--;
