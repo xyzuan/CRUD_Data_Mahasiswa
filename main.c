@@ -40,7 +40,7 @@ int main(){
     case 2:
         system("cls");
         printf("\n === List Data ===\n\n");
-        if( jmlh_mhs > 1){
+        if( jmlh_mhs >= 1){
             for(list = 1; list <= jmlh_mhs; list++){
                 printf(" == %d ==", list);
                 printf("\n\n NIM Praktikan\t\t\t: %s", db_nim[list]);
