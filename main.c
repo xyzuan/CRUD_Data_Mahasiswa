@@ -6,8 +6,7 @@
 
 int pil_menu;
 int jmlh_mhs, list, d;
-char nim_jmlh_inpt, pil_update[10];
-char nim[99];
+char nim_jmlh_inpt, nim[99];
 bool duplicate;
 char db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
 
@@ -23,13 +22,14 @@ int main(){
         system("cls");
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" , nim);
-        duplicate = false;
         for(int i = 0; i < jmlh_mhs; i++){
             if(strcmp(db_nim[i], nim) == 0){
                 duplicate = true;
             }
+            if(strcmp(db_nim[i], nim) == 1){
+                duplicate = false;
+            }
         }
-
         if (strlen(nim) > 10){
             printf("\n --------------------\n");
             printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
@@ -37,13 +37,11 @@ int main(){
             printf(" Tekan enter untuk kembali ke menu...");
             getch(); goto menu;
         }
-
         if(duplicate == false){
-            strcpy(db_nim[jmlh_mhs], nim);
             printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", &db_nama[jmlh_mhs]);
             printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" , &db_kelas[jmlh_mhs]);
             printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" , &db_dosen[jmlh_mhs]);
-            jmlh_mhs++;
+            strcpy(db_nim[jmlh_mhs], nim); jmlh_mhs++;
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Tambah.\n");
             printf("\n --------------------\n");
@@ -68,7 +66,7 @@ int main(){
                 printf("\n\n --------------------\n\n");
             }
         } else {
-            printf("\n --------------------\n");
+            printf(" --------------------\n");
             printf("\n Data Tidak Tersedia.\n");
             printf("\n --------------------\n");
         }
@@ -78,10 +76,10 @@ int main(){
     case 3:
         system("cls");
         printf(" === Update Data ===\n\n");
-        printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",pil_update);
+        printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",nim);
         list=0; d=0;
         while(list < jmlh_mhs && d == 0){
-            if(strcmp(pil_update,db_nim[list]) == 0){
+            if(strcmp(nim,db_nim[list]) == 0){
                 d++;
             }
             list++;
@@ -90,7 +88,6 @@ int main(){
             printf("\n --------------------\n");
             printf("\n Data yang akan di update tidak tersedia\n");
             printf("\n --------------------\n");
-            
         } else {
             list--;
             printf("\n Nama Baru\t\t\t: "); scanf(" %[^\n]s", db_nama[list]);
@@ -106,15 +103,14 @@ int main(){
     case 4:
         system("cls");
         printf(" === Delete Data ===\n\n");
-        printf(" Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",pil_update);
+        printf(" Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",nim);
         d=0; list=0;
-        while(list < jmlh_mhs && d ==0){
-            if(strcmp(pil_update,db_nim[list]) == 0){
+        while(list < jmlh_mhs && d == 0){
+            if(strcmp(nim,db_nim[list]) == 0){
                 d++;
             }
             list++;
         }
-        
         if(d < 1){
             printf("\n --------------------\n");
             printf("\n Data Tidak di Temukan.\n");
@@ -138,15 +134,14 @@ int main(){
     case 5:
         system("cls");
         printf(" === Search Data ===\n\n");
-        printf(" Masukkan NIM Praktikan : "); scanf("%s", pil_update);
+        printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
         d=0; list=0;
-        while(list <= jmlh_mhs && d == 0){
-            if(strcmp(pil_update,db_nim[list]) == 0){
+        while(list < jmlh_mhs && d == 0){
+            if(strcmp(nim,db_nim[list]) == 0){
                 d++;
             }
             list++;
         }
-        
         if(d < 1){
             printf("\n --------------------\n");
             printf("\n Data Tidak di Temukan.\n");
