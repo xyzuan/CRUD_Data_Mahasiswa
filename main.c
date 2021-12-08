@@ -112,7 +112,7 @@ int main(){
     case 4:
         system("cls");
         printf(" === Delete Data ===\n\n");
-        printf("\n\n Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",pil_update);
+        printf(" Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",pil_update);
         d=0; list=0;
         while(list < jmlh_mhs && d ==0){
             if(strcmp(pil_update,db_main[list].nim) == 0){
