@@ -8,7 +8,7 @@ int pil_menu;
 int jmlh_mhs, list, d;
 char nim_jmlh_inpt, pil_update[10];
 char nim[99];
-bool duplicate = false;
+bool duplicate;
 struct db_mhs{
     char nim[99];
     char nama[99];
@@ -35,6 +35,15 @@ int main(){
                 duplicate = true;
             }
         }
+
+        if (strlen(nim) > 10){
+            printf("\n --------------------\n");
+            printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
+            printf("\n --------------------\n");
+            printf(" Tekan enter untuk kembali ke menu...");
+            getch(); goto menu;
+        }
+
         if(duplicate == false){
             strcpy(db_main[jmlh_mhs].nim, nim);
             printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", &db_main[jmlh_mhs].nama);
@@ -47,10 +56,6 @@ int main(){
         } else if (duplicate == true){
             printf("\n --------------------\n");
             printf("\n Inputan NIM Terdeteksi Duplikat.\n");
-            printf("\n --------------------\n");
-        } else if (strlen(db_main[jmlh_mhs].nim) >= 10){
-            printf("\n --------------------\n");
-            printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
             printf("\n --------------------\n");
         }
         printf(" Tekan enter untuk kembali ke menu...");
