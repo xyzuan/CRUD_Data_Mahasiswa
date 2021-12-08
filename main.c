@@ -1,15 +1,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <ctype.h>
 #include <conio.h>
 
 int pil_menu;
 int jmlh_mhs, list, d;
 char nim_jmlh_inpt, pil_update[10];
-char db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
+struct db_mhs{
+    char nim[99];
+    char nama[99];
+    char kelas[99];
+    char dosen[99];
+}; 
 
 int main(){
-
+    struct db_mhs db_main[99];
     menu:
     system("cls");
     printf(" Sistem Pendataan Akun I-Lab Infotech\n\n");
@@ -19,13 +25,13 @@ int main(){
     switch (pil_menu){
     case 1:
         system("cls");
-        jmlh_mhs = jmlh_mhs + 1;
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" ,db_nim[jmlh_mhs]);
-        if(strlen(db_nim[jmlh_mhs]) <= 10){
-            printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", db_nama[jmlh_mhs]);
-            printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" ,db_kelas[jmlh_mhs]);
-            printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" ,db_dosen[jmlh_mhs]);
+        printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].nim);
+        if(strlen(db_main[jmlh_mhs].nim) <= 10){
+            printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", &db_main[jmlh_mhs].nama);
+            printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].kelas);
+            printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].dosen);
+            jmlh_mhs++;
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Tambah.\n");
             printf("\n --------------------\n");
@@ -41,12 +47,12 @@ int main(){
         system("cls");
         printf("\n === List Data ===\n\n");
         if( jmlh_mhs >= 1){
-            for(list = 1; list <= jmlh_mhs; list++){
-                printf(" == %d ==", list);
-                printf("\n\n NIM Praktikan\t\t\t: %s", db_nim[list]);
-                printf("\n\n Nama Praktikan\t\t\t: %s", db_nama[list]);
-                printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas[list]);
-                printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen[list]);
+            for(list = 0; list < jmlh_mhs; list++){
+                printf(" == %d ==", list + 1);
+                printf("\n\n NIM Praktikan\t\t\t: %s", db_main[list].nim);
+                printf("\n\n Nama Praktikan\t\t\t: %s", db_main[list].nama);
+                printf("\n\n Kelas Pemrograman Dasar\t: %s", db_main[list].kelas);
+                printf("\n\n Dosen Pengampu\t\t\t: %s", db_main[list].dosen);
                 printf("\n\n --------------------\n\n");
             }
         } else {
@@ -61,9 +67,9 @@ int main(){
         system("cls");
         printf(" === Update Data ===\n\n");
         printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",pil_update);
-        list=1; d=0;
-        while(list <= jmlh_mhs && d == 0){
-            if(strcmp(pil_update,db_nim[list]) == 0){
+        list=0; d=0;
+        while(list < jmlh_mhs && d == 0){
+            if(strcmp(pil_update,db_main[list].nim) == 0){
                 d++;
             }
             list++;
@@ -75,9 +81,9 @@ int main(){
             
         } else {
             list--;
-            printf("\n Nama Baru\t\t\t: "); scanf(" %[^\n]s", db_nama[list]);
-            printf("\n Kelas Baru\t\t\t: "); scanf(" %[^\n]s", db_kelas[list]);
-            printf("\n Dosen Pengampu Baru\t\t: "); scanf(" %[^\n]s", db_dosen[list]);
+            printf("\n Nama Baru\t\t\t: "); scanf(" %[^\n]s", db_main[list].nama);
+            printf("\n Kelas Baru\t\t\t: "); scanf(" %[^\n]s", db_main[list].kelas);
+            printf("\n Dosen Pengampu Baru\t\t: "); scanf(" %[^\n]s", db_main[list].dosen);
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Edit.\n");
             printf("\n --------------------\n");
@@ -89,9 +95,9 @@ int main(){
         system("cls");
         printf(" === Delete Data ===\n\n");
         printf("\n\n Masukkan NIM Praktikan yang Ingin di Delete Data nya : "); scanf("%s",pil_update);
-        d=0; list=1;
-        while(list <= jmlh_mhs && d ==0){
-            if(strcmp(pil_update,db_nim[list])==0){
+        d=0; list=0;
+        while(list < jmlh_mhs && d ==0){
+            if(strcmp(pil_update,db_main[list].nim) == 0){
                 d++;
             }
             list++;
@@ -104,13 +110,13 @@ int main(){
         } else {
             list--;
             for(list = list; list <= jmlh_mhs; list++){
-                strcpy(db_nim[list], db_nim[list+1]);
-                strcpy(db_nama[list],db_nama[list+1]);
-                strcpy(db_kelas[list],db_kelas[list+1]);
-                strcpy(db_dosen[list],db_dosen[list+1]);
+                strcpy(db_main[list].nim, db_main[list+1].nim);
+                strcpy(db_main[list].nama,db_main[list+1].nama);
+                strcpy(db_main[list].kelas,db_main[list+1].kelas);
+                strcpy(db_main[list].dosen,db_main[list+1].dosen);
             }
             list--;
-            strcpy(db_nim[list],""); jmlh_mhs--;
+            strcpy(db_main[list].nim,""); jmlh_mhs--;
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Hapus.\n");
             printf("\n --------------------\n");
@@ -121,9 +127,9 @@ int main(){
         system("cls");
         printf(" === Search Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", pil_update);
-        d=0; list=1;
+        d=0; list=0;
         while(list <= jmlh_mhs && d == 0){
-            if(strcmp(pil_update,db_nim[list])==0){
+            if(strcmp(pil_update,db_main[list].nim) == 0){
                 d++;
             }
             list++;
@@ -135,9 +141,9 @@ int main(){
             printf("\n --------------------\n");
         } else {
             list--;
-            printf("\n Nama Praktikan\t\t\t: %s", db_nama[list]);
-            printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas[list]);
-            printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen[list]);
+            printf("\n Nama Praktikan\t\t\t: %s", db_main[list].nama);
+            printf("\n\n Kelas Pemrograman Dasar\t: %s", db_main[list].kelas);
+            printf("\n\n Dosen Pengampu\t\t\t: %s", db_main[list].dosen);
             printf("\n\n");
         }
         printf(" Tekan enter untuk kembali ke menu...");
