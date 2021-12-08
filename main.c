@@ -1,12 +1,14 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <ctype.h>
+#include <stdbool.h>
 #include <conio.h>
 
 int pil_menu;
 int jmlh_mhs, list, d;
 char nim_jmlh_inpt, pil_update[10];
+char nim[99];
+bool duplicate = false;
 struct db_mhs{
     char nim[99];
     char nama[99];
@@ -26,8 +28,15 @@ int main(){
     case 1:
         system("cls");
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].nim);
-        if(strlen(db_main[jmlh_mhs].nim) <= 10){
+        printf("\n Input NIM Praktikan\t\t\t: "); scanf(" %[^\n]s" , nim);
+        duplicate = false;
+        for(int i = 0; i < jmlh_mhs; i++){
+            if(strcmp(db_main[i].nim, nim) == 0){
+                duplicate = true;
+            }
+        }
+        if(duplicate == false){
+            strcpy(db_main[jmlh_mhs].nim, nim);
             printf("\n Input Nama Praktikan\t\t\t: "); scanf(" %[^\n]s", &db_main[jmlh_mhs].nama);
             printf("\n Input Kelas Pemrograman Dasar\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].kelas);
             printf("\n Input Nama Dosen Pengampu\t\t: "); scanf(" %[^\n]s" , &db_main[jmlh_mhs].dosen);
@@ -35,7 +44,11 @@ int main(){
             printf("\n --------------------\n");
             printf("\n Data Berhasil di Tambah.\n");
             printf("\n --------------------\n");
-        } else {
+        } else if (duplicate == true){
+            printf("\n --------------------\n");
+            printf("\n Inputan NIM Terdeteksi Duplikat.\n");
+            printf("\n --------------------\n");
+        } else if (strlen(db_main[jmlh_mhs].nim) >= 10){
             printf("\n --------------------\n");
             printf("\n Inputan NIM tidak boleh melebihi 10 karakter.\n");
             printf("\n --------------------\n");
