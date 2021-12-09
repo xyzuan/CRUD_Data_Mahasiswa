@@ -1,6 +1,7 @@
 {
   "files.associations": {
-    "string.h": "c"
+    "string.h": "c",
+    "conio.h": "c"
   },
   "C_Cpp_Runner.cCompilerPath": "C:/bin/mingw64/bin/gcc.exe",
   "C_Cpp_Runner.cppCompilerPath": "C:/bin/mingw64/bin/g++.exe",
