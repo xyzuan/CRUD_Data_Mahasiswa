@@ -4,8 +4,8 @@
 #include <stdbool.h>
 #include <conio.h>
 
-int pil_menu; jmlh_mhs, list;
-char nim_jmlh_inpt, nim[99]; db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
+int pil_menu, jmlh_mhs, list;
+char nim_jmlh_inpt, nim[99], db_nim['0'][99], db_nama['0'][99], db_kelas['0'][99], db_dosen['0'][99];
 bool duplicate, found;
 
 int main(){
