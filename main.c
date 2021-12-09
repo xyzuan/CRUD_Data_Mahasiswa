@@ -1,3 +1,9 @@
+/*
+	Jody Yuantoro ( 2021-147 )
+	Informatics Engineering, Faculty of Engineering
+	University of Muhammadiyah Malang
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
