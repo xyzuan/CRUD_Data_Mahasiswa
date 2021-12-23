@@ -58,12 +58,10 @@ int main(){
         db_main = fopen("mhs.db", "a"); db_main_r = fopen("mhs.db", "r");
         duplicate = false;
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim);
+        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim);
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
-            } else {
-                check_special_char(nim);
             }
         }
         if(sc == false){
