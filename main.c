@@ -19,7 +19,7 @@ bool duplicate, available, sc;
 
 void uppercase(char *db){
     for(int i = 0; db[i]!='\0'; i++){
-        if(db[i] >= 'a' && db[i] <= 'z'){
+        if(db[i] >= 97 && db[i] <= 122){
             db[i] = db[i] -32;
         }
     }
