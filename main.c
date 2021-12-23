@@ -26,8 +26,10 @@ void uppercase(char *db){
 }
 
 void check_special_char(char *db){
-    char str; sc = false;
-    for(int i = 0, j = 0; str = db[i] = db[j]; j++){
+    char str, db_check[99];
+    sc = false;
+    strcpy(db_check, db);
+    for(int i = 0, j = 0; str = db_check[i] = db_check[j]; j++){
         if(str >= 32 && str <= 47 ||  str >= 58 && str <= 63){
             i++;
             sc = true;
@@ -57,7 +59,7 @@ int main(){
 
         db_main = fopen("mhs.db", "a");
         db_main_r = fopen("mhs.db", "r");
-        duplicate = false; 
+        duplicate = false;
 
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim);
