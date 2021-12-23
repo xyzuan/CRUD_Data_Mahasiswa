@@ -119,8 +119,8 @@ int main(){
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 available = true;
-                printf("\n Nama Depan Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-                printf("\n Nama Belakang Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
+                printf("\n Nama Depan Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
+                printf("\n Nama Belakang Baru\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
                 printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
                 printf("\n Dosen Pengampu Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_dosen);
                 fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
