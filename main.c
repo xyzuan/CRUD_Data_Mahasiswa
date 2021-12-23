@@ -57,8 +57,8 @@ int main(){
     case 1:
         system("cls");
 
-        db_main = fopen("db_mhs.db", "a");
-        db_main_r = fopen("db_mhs.db", "r");
+        db_main = fopen("mhs.db", "a");
+        db_main_r = fopen("mhs.db", "r");
         duplicate = false; 
 
         printf(" === Create Data ===\n");
@@ -105,7 +105,7 @@ int main(){
         system("cls");
         
         int no_urut = 0;
-        db_main_r = fopen("db_mhs.db", "r");
+        db_main_r = fopen("mhs.db", "r");
 
         printf("\n === List Data ===\n\n");
         while (fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
@@ -125,8 +125,8 @@ int main(){
     case 3:
         system("cls");
 
-        db_main_r = fopen("db_mhs.db", "r");
-        db_main_w = fopen("db_mhs_new.db", "w");
+        db_main_r = fopen("mhs.db", "r");
+        db_main_w = fopen("mhs_temp.db", "w");
         available = false;
 
         printf(" === Update Data ===\n\n");
@@ -163,16 +163,16 @@ int main(){
         }
 
         fclose(db_main_r); fclose(db_main_w);
-        remove("db_mhs.db");
-        rename("db_mhs_new.db", "db_mhs.db");
+        remove("mhs.db");
+        rename("mhs_temp.db", "mhs.db");
         printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 4:
         system("cls");
 
-        db_main_r = fopen("db_mhs.db", "r");
-        db_main_w = fopen("db_mhs_new.db", "w");
+        db_main_r = fopen("mhs.db", "r");
+        db_main_w = fopen("mhs_temp.db", "w");
         available = false;
 
         printf(" === Delete Data ===\n\n");
@@ -188,15 +188,15 @@ int main(){
         }
 
         fclose(db_main_r); fclose(db_main_w);
-        remove("db_mhs.db");
-        rename("db_mhs_new.db", "db_mhs.db");
+        remove("mhs.db");
+        rename("mhs_temp.db", "mhs.db");
         printf("\n\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 5:
         system("cls");
 
-        db_main_r = fopen("db_mhs.db", "r");
+        db_main_r = fopen("mhs.db", "r");
         available = false;
 
         printf(" === Search Data ===\n\n");
