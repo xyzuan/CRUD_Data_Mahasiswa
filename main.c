@@ -15,12 +15,24 @@
 int pil_menu, jmlh_mhs, list;
 char nim[99]; char db_nim[99]; char db_nama[99]; char nama_blkng[99]; char db_kelas[99]; char db_dosen[99];
 FILE *db_main, *db_main_r, *db_main_w;
-bool duplicate, available;
+bool duplicate, available, sc;
 
 void uppercase(char *db){
     for(int i = 0; db[i]!='\0'; i++){
         if(db[i] >= 'a' && db[i] <= 'z'){
             db[i] = db[i] -32;
+        }
+    }
+}
+
+void check_special_char(char *db){
+
+    char str; sc = false;
+
+    for(int i = 0, j = 0; str = db[i] = db[j]; j++){
+        if(str >= 32 && str <= 47 ||  str >= 58 && str <= 63){
+            i++;
+            sc = true;
         }
     }
 }
@@ -47,33 +59,41 @@ int main(){
 
         db_main = fopen("db_mhs.db", "a");
         db_main_r = fopen("db_mhs.db", "r");
-        duplicate = false;
+        duplicate = false; 
 
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim);
+        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim);
+        
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
             } 
         }
 
-        if(duplicate == false){
-            strcpy(db_nim, nim);
-            printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-            printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
-            printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
-            printf("\n Input Nama Dosen Pengampu\t\t: "); fflush(stdin); scanf("%[^\n]" , db_dosen);
+        if(sc == false){
+            if(duplicate == false){
+                strcpy(db_nim, nim);
+                printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
+                printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
+                printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
+                printf("\n Input Nama Dosen Pengampu\t\t: "); fflush(stdin); scanf("%[^\n]" , db_dosen);
             
-            fprintf(db_main,"%s;", db_nim);
-            fprintf(db_main,"%s;", db_nama);
-            fprintf(db_main,"%s;", db_kelas);
-            fprintf(db_main,"%s\n", db_dosen);      
-            printf("\n --------------------\n");
-            printf("\n Data Berhasil di Tambah.\n");
-            printf("\n --------------------\n");
+                fprintf(db_main,"%s;", db_nim);
+                fprintf(db_main,"%s;", db_nama);
+                fprintf(db_main,"%s;", db_kelas);
+                fprintf(db_main,"%s\n", db_dosen);      
+                printf("\n --------------------\n");
+                printf("\n Data Berhasil di Tambah.\n");
+                printf("\n --------------------\n");
+            } else {
+                printf("\n --------------------\n");
+                printf("\n Inputan NIM Terdeteksi Duplikat.\n");
+                printf("\n --------------------\n");
+            }
         } else {
             printf("\n --------------------\n");
-            printf("\n Inputan NIM Terdeteksi Duplikat.\n");
+            printf("\n Inputan NIM tidak diperbolehkan\n");
+            printf(  " menggunakan simbol.\n");
             printf("\n --------------------\n");
         }
 
