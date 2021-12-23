@@ -26,9 +26,7 @@ void uppercase(char *db){
 }
 
 void check_special_char(char *db){
-
     char str; sc = false;
-
     for(int i = 0, j = 0; str = db[i] = db[j]; j++){
         if(str >= 32 && str <= 47 ||  str >= 58 && str <= 63){
             i++;
@@ -62,12 +60,14 @@ int main(){
         duplicate = false; 
 
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim);
+        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim);
         
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
-            } 
+            } else {
+                check_special_char(nim);
+            }
         }
 
         if(sc == false){
