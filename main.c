@@ -46,8 +46,7 @@ int main(){
 
     menu:
     system("cls");
-    time_t localtime;
-	time(&localtime);
+    time_t localtime; time(&localtime);
     printf("\n Sistem Pendataan Akun I-Lab Infotech");
     printf("\n Database Time : %s\n", ctime(&localtime));
     printf(" === Pilihan Menu ===\n\n");
@@ -56,14 +55,10 @@ int main(){
     switch (pil_menu){
     case 1:
         system("cls");
-
-        db_main = fopen("mhs.db", "a");
-        db_main_r = fopen("mhs.db", "r");
+        db_main = fopen("mhs.db", "a"); db_main_r = fopen("mhs.db", "r");
         duplicate = false;
-
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim);
-        
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
@@ -71,7 +66,6 @@ int main(){
                 check_special_char(nim);
             }
         }
-
         if(sc == false){
             if(duplicate == false){
                 strcpy(db_nim, nim);
@@ -79,11 +73,7 @@ int main(){
                 printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
                 printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
                 printf("\n Input Nama Dosen Pengampu\t\t: "); fflush(stdin); scanf("%[^\n]" , db_dosen);
-            
-                fprintf(db_main,"%s;", db_nim);
-                fprintf(db_main,"%s;", db_nama);
-                fprintf(db_main,"%s;", db_kelas);
-                fprintf(db_main,"%s\n", db_dosen);      
+                fprintf(db_main,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);  
                 printf("\n --------------------\n");
                 printf("\n Data Berhasil di Tambah.\n");
                 printf("\n --------------------\n");
@@ -98,17 +88,14 @@ int main(){
             printf(  " menggunakan simbol.\n");
             printf("\n --------------------\n");
         }
-
         fclose(db_main); fclose(db_main_r);
         printf(" Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 2:
         system("cls");
-        
         int no_urut = 0;
         db_main_r = fopen("mhs.db", "r");
-
         printf("\n === List Data ===\n\n");
         while (fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             no_urut++;
@@ -119,18 +106,14 @@ int main(){
             printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen);
             printf("\n\n --------------------------------------------------------\n\n");
         }
-
         fclose(db_main_r);
         printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 3:
         system("cls");
-
-        db_main_r = fopen("mhs.db", "r");
-        db_main_w = fopen("mhs_temp.db", "w");
+        db_main_r = fopen("mhs.db", "r"); db_main_w = fopen("mhs_temp.db", "w");
         available = false;
-
         printf(" === Update Data ===\n\n");
         printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",nim);
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
@@ -140,67 +123,45 @@ int main(){
                 printf("\n Nama Belakang Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
                 printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
                 printf("\n Dosen Pengampu Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_dosen);
-
-                fprintf(db_main_w,"%s;", db_nim);
-                fprintf(db_main_w,"%s;", db_nama);
-                fprintf(db_main_w,"%s;", db_kelas);
-                fprintf(db_main_w,"%s\n", db_dosen);  
-                
+                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
                 printf("\n --------------------\n");
                 printf("\n Data Berhasil di Edit.\n");
                 printf("\n --------------------\n");
-            
             } else {
-                fprintf(db_main_w,"%s;", db_nim);
-                fprintf(db_main_w,"%s;", db_nama);
-                fprintf(db_main_w,"%s;", db_kelas);
-                fprintf(db_main_w,"%s\n", db_dosen);
+                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
             }
         }
-
         if(available == false){
             printf("\n --------------------\n");
             printf("\n Data Tidak Tersedia.\n");
             printf("\n --------------------\n");
         }
-
         fclose(db_main_r); fclose(db_main_w);
-        remove("mhs.db");
-        rename("mhs_temp.db", "mhs.db");
+        remove("mhs.db"); rename("mhs_temp.db", "mhs.db");
         printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 4:
         system("cls");
-
-        db_main_r = fopen("mhs.db", "r");
-        db_main_w = fopen("mhs_temp.db", "w");
+        db_main_r = fopen("mhs.db", "r"); db_main_w = fopen("mhs_temp.db", "w");
         available = false;
-
         printf(" === Delete Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) != 0){
-                fprintf(db_main_w,"%s;", db_nim);
-                fprintf(db_main_w,"%s;", db_nama);
-                fprintf(db_main_w,"%s;", db_kelas);
-                fprintf(db_main_w,"%s\n", db_dosen);
+                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
             } else {
             }
         }
-
         fclose(db_main_r); fclose(db_main_w);
-        remove("mhs.db");
-        rename("mhs_temp.db", "mhs.db");
+        remove("mhs.db"); rename("mhs_temp.db", "mhs.db");
         printf("\n\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 5:
         system("cls");
-
         db_main_r = fopen("mhs.db", "r");
         available = false;
-
         printf(" === Search Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
         while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
@@ -212,13 +173,11 @@ int main(){
                 printf("\n\n Dosen Pengampu\t\t\t: %s\n", db_dosen);
             }
         }
-
         if(available == false){
             printf("\n --------------------\n");
             printf("\n Data Tidak di Temukan.\n");
             printf("\n --------------------\n");
         }
-
         fclose(db_main_r);
         printf("\n\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
