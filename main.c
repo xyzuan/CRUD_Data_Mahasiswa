@@ -40,10 +40,12 @@ void check_special_char(char *db){
 int main(){
 
 	system("cls");
-    printf("\n\n\n\nSistem Pendataan Akun I-Lab Infotech");
-	printf("\n\nLoading");
+    printf("\n\n\n\n ========================================== ");
+    printf("\n == Sistem Pendataan Akun I-Lab Infotech == ");
+    printf("\n ========================================== ");
+	printf("\n\n Loading");
 	Sleep(500); printf(" _"); Sleep(500); printf("_"); Sleep(500); printf("___"); Sleep(500); printf("_______"); Sleep(500); printf("___");
-
+    
     menu:
     system("cls");
     time_t localtime; time(&localtime);
