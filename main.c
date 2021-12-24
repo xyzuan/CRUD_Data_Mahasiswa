@@ -94,11 +94,11 @@ int main(){
 
     case 2:
         system("cls");
-        int no_urut = 0;
+        int no_urut = 0; available = false;
         db_main_r = fopen("mhs.db", "r");
         printf("\n === List Data ===\n\n");
         while (fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
-            no_urut++;
+            no_urut++; available = true;
             printf(" == %d ==", no_urut);
             printf("\n\n NIM Praktikan\t\t\t: %s", db_nim);
             printf("\n\n Nama Praktikan\t\t\t: %s", db_nama);
@@ -106,6 +106,13 @@ int main(){
             printf("\n\n Dosen Pengampu\t\t\t: %s", db_dosen);
             printf("\n\n --------------------------------------------------------\n\n");
         }
+
+        if(available == false){
+            printf(" --------------------\n");
+            printf("\n Data Tidak Tersedia.\n");
+            printf("\n --------------------\n");
+        }
+
         fclose(db_main_r);
         printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
@@ -150,12 +157,23 @@ int main(){
         while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) != 0){
                 fprintf(db_main_w,"%s|%s|%s|%s\n", db_nim, db_nama, db_kelas, db_dosen);
-            } else {
+            } else if (strcmp(db_nim, nim) != 1){
+                available = true;
+                printf("\n --------------------\n");
+                printf("\n Data Berhasil di Hapus.\n");
+                printf("\n --------------------\n");
             }
         }
+
+        if(available == false){
+            printf("\n --------------------\n");
+            printf("\n Data Tidak Tersedia.\n");
+            printf("\n --------------------\n");
+        }
+
         fclose(db_main_r); fclose(db_main_w);
         remove("mhs.db"); rename("mhs_temp.db", "mhs.db");
-        printf("\n\n Tekan enter untuk kembali ke menu...");
+        printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 5:
@@ -179,7 +197,7 @@ int main(){
             printf("\n --------------------\n");
         }
         fclose(db_main_r);
-        printf("\n\n Tekan enter untuk kembali ke menu...");
+        printf("\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
 
     case 6:
