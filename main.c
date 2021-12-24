@@ -30,7 +30,8 @@ void check_special_char(char *db){
     sc = false;
     strcpy(db_check, db);
     for(int i = 0, j = 0; str = db_check[i] = db_check[j]; j++){
-        if(str >= 32 && str <= 47 ||  str >= 58 && str <= 64 || str >= 91 && str <= 96 || str >= 123 && str <= 126){
+        if(str >= 0x20 && str <= 0x2F ||  str >= 0x3A && str <= 0x40 ||
+           str >= 0x5B && str <= 0x60 ||  str >= 0x7B && str <= 0x7E){
             i++;
             sc = true;
         }
