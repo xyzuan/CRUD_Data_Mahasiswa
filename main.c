@@ -30,7 +30,7 @@ void check_special_char(char *db){
     sc = false;
     strcpy(db_check, db);
     for(int i = 0, j = 0; str = db_check[i] = db_check[j]; j++){
-        if(str >= 32 && str <= 47 ||  str >= 58 && str <= 63){
+        if(str >= 32 && str <= 47 ||  str >= 58 && str <= 64 || str >= 91 && str <= 96 || str >= 123 && str <= 126){
             i++;
             sc = true;
         }
@@ -61,7 +61,7 @@ int main(){
         duplicate = false;
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim);
-        while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
             }
@@ -73,7 +73,7 @@ int main(){
                 printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
                 printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
                 printf("\n Input Nama Dosen Pengampu\t\t: "); fflush(stdin); scanf("%[^\n]" , db_dosen);
-                fprintf(db_main,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);  
+                fprintf(db_main,"%s|%s|%s|%s\n", db_nim, db_nama, db_kelas, db_dosen);  
                 printf("\n --------------------\n");
                 printf("\n Data Berhasil di Tambah.\n");
                 printf("\n --------------------\n");
@@ -97,7 +97,7 @@ int main(){
         int no_urut = 0;
         db_main_r = fopen("mhs.db", "r");
         printf("\n === List Data ===\n\n");
-        while (fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
+        while (fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             no_urut++;
             printf(" == %d ==", no_urut);
             printf("\n\n NIM Praktikan\t\t\t: %s", db_nim);
@@ -116,19 +116,19 @@ int main(){
         available = false;
         printf(" === Update Data ===\n\n");
         printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",nim);
-        while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 available = true;
                 printf("\n Nama Depan Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
                 printf("\n Nama Belakang Baru\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
                 printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
                 printf("\n Dosen Pengampu Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_dosen);
-                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
+                fprintf(db_main_w,"%s|%s|%s|%s\n", db_nim, db_nama, db_kelas, db_dosen);
                 printf("\n --------------------\n");
                 printf("\n Data Berhasil di Edit.\n");
                 printf("\n --------------------\n");
             } else {
-                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
+                fprintf(db_main_w,"%s|%s|%s|%s\n", db_nim, db_nama, db_kelas, db_dosen);
             }
         }
         if(available == false){
@@ -147,9 +147,9 @@ int main(){
         available = false;
         printf(" === Delete Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
-        while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) != 0){
-                fprintf(db_main_w,"%s;%s;%s;%s\n", db_nim, db_nama, db_kelas, db_dosen);
+                fprintf(db_main_w,"%s|%s|%s|%s\n", db_nim, db_nama, db_kelas, db_dosen);
             } else {
             }
         }
@@ -164,7 +164,7 @@ int main(){
         available = false;
         printf(" === Search Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
-        while(fscanf(db_main_r, "%[^;];%[^;];%[^;];%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas, db_dosen) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 available = true;
                 printf("\n\n NIM Praktikan\t\t\t: %s", db_nim);
