@@ -15,7 +15,7 @@
 int pil_menu, jmlh_mhs, list;
 char nim[99], db_nim[99], db_nama[99], nama_blkng[99], db_kelas[99];
 FILE *db_main, *db_main_r, *db_main_w;
-bool duplicate, available, sc;
+bool duplicate, available, sc, sc_space;
 
 void uppercase(char *db){
     for(int i = 0; db[i]!='\0'; i++){
@@ -25,14 +25,27 @@ void uppercase(char *db){
     }
 }
 
-void check_special_char(char *db){
+void check_special_char(char *db, int type){
+
+    /* Usage : int type 0 = Avoid all special characters
+               int type 1 = Only avoid space in strings
+    */
+
     char str, db_check[99];
-    sc = false;
+    sc = false; sc_space = false;
     strcpy(db_check, db);
-    for(int i = 0, j = 0; str = db_check[j]; j++){
-        if((str >= 0x20 && str <= 0x2F) ||  (str >= 0x3A && str <= 0x40) ||
-           (str >= 0x5B && str <= 0x60) ||  (str >= 0x7B && str <= 0x7E)){
-            sc = true;
+    if(type == 0){
+        for(int i = 0, j = 0; str = db_check[j]; j++){
+            if((str >= 0x21 && str <= 0x2F) ||  (str >= 0x3A && str <= 0x40) ||
+               (str >= 0x5B && str <= 0x60) ||  (str >= 0x7B && str <= 0x7E)){
+                sc = true;
+            }
+        }
+    } else if ( type == 1 ){
+        for(int i = 0, j = 0; str = db_check[j]; j++){
+            if(str == 0x20 ){
+                sc_space = true;
+            }
         }
     }
 }
@@ -60,7 +73,7 @@ int main(){
         db_main = fopen("mhs.db", "a"); db_main_r = fopen("mhs.db", "r");
         duplicate = false;
         printf(" === Create Data ===\n");
-        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim);
+        printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim, 0);
         while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 duplicate = true;
@@ -69,13 +82,22 @@ int main(){
         if(sc == false){
             if(duplicate == false){
                 strcpy(db_nim, nim);
+                input_nama:
                 printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-                printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
-                printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
-                fprintf(db_main,"%s|%s|%s\n", db_nim, db_nama, db_kelas);  
-                printf("\n --------------------\n");
-                printf("\n Data Berhasil di Tambah.\n");
-                printf("\n --------------------\n");
+                printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng); 
+                check_special_char(db_nama, 1);
+                if(sc_space == false){
+                    printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
+                    fprintf(db_main,"%s|%s|%s\n", db_nim, db_nama, db_kelas);  
+                    printf("\n --------------------\n");
+                    printf("\n Data Berhasil di Tambah.\n");
+                    printf("\n --------------------\n");
+                } else {
+                    printf("\n --------------------\n");
+                    printf("\n Inputan Nama Tidak diperbolehkan");
+                    printf("\n menggunakan spasi.\n");
+                    printf("\n --------------------\n");
+                }
             } else {
                 printf("\n --------------------\n");
                 printf("\n Inputan NIM Terdeteksi Duplikat.\n");
@@ -124,13 +146,26 @@ int main(){
         while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
             if(strcmp(db_nim, nim) == 0){
                 available = true;
+                update_nama:
                 printf("\n Nama Depan Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
                 printf("\n Nama Belakang Baru\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
-                printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
-                fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
-                printf("\n --------------------\n");
-                printf("\n Data Berhasil di Edit.\n");
-                printf("\n --------------------\n");
+                check_special_char(db_nama, 1);
+                if(sc_space == false){
+                    printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
+                    fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
+                    printf("\n --------------------\n");
+                    printf("\n Data Berhasil di Edit.\n");
+                    printf("\n --------------------\n");
+                } else {
+                    system("cls");
+                    printf(" === Update Data ===\n");
+                    printf("\n --------------------\n");
+                    printf("\n Inputan Nama Tidak diperbolehkan");
+                    printf("\n menggunakan spasi.\n");
+                    printf("\n --------------------\n");
+                    goto update_nama;
+                }
+                
             } else {
                 fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
             }
