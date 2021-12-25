@@ -15,9 +15,33 @@ char rev[99] = "rev2.0_demo";
 #include <windows.h>
 
 int pil_menu, jmlh_mhs, list;
+char logged_user[99];
 char nim[99], db_nim[99], db_nama[99], nama_blkng[99], db_kelas[99];
 FILE *db_main, *db_main_r, *db_main_w;
 bool duplicate, available, sc, sc_space;
+bool user_allow;
+
+void login(){
+    
+    char input_user[99], input_pass[99], admin_user[99], admin_pass[99];
+    FILE *db_admin;
+    db_admin = fopen("admin.db", "r");
+
+    system("cls");
+    printf("\n\n\n\n ========================================== ");
+    printf("\n == Sistem Pendataan Akun I-Lab Infotech == ");
+    printf("\n ========================================== ");
+    printf("\n\n === Admin Login ===");
+    printf("\n\n Masukkan username : "); fflush(stdin); scanf("%[^\n]" , input_user);
+    printf(" Masukkan password : "); fflush(stdin); scanf("%[^\n]" , input_pass);
+
+    while(fscanf(db_admin,"%[^|]|%[^\n]\n", admin_user, admin_pass) != EOF){
+        if(strcmp(input_user, admin_user) == 0 && strcmp(input_pass, admin_pass) == 0){
+            user_allow = true;
+            strcpy(logged_user, admin_user);
+        }
+    }
+}
 
 void uppercase(char *db){
     for(int i = 0; db[i]!='\0'; i++){
@@ -54,13 +78,14 @@ void check_special_char(char *db, int type){
 
 int main(){
 
+    login();
 	system("cls");
     printf("\n\n\n\n ========================================== ");
     printf("\n == Sistem Pendataan Akun I-Lab Infotech == ");
     printf("\n ========================================== ");
-	printf("\n\n Loading");
-	Sleep(500); printf(" _"); Sleep(500); printf("_"); Sleep(500); printf("___"); Sleep(500); printf("_______"); Sleep(500); printf("___");
-    
+	printf("\n\n Sedang Login");
+	Sleep(500); printf(" _______"); Sleep(50); printf("_________"); Sleep(40); printf("______"); Sleep(500); printf("___"); Sleep(900); printf("____");
+    if(user_allow == true){
     menu:
     system("cls");
     time_t localtime; time(&localtime);
@@ -69,6 +94,7 @@ int main(){
     printf(  "\n  Software revision\t: %s\n", rev);
     printf(    "  Database Time\t\t: %s\n", ctime(&localtime));
     printf(  " ====================================================");
+    printf("\n\n Selamat datang, %s", logged_user);
     printf("\n\n === Pilihan Menu ===\n\n");
     printf(" 1. Create Data.\n 2. Show Data.\n 3. Update Data.\n 4. Delete Data.\n 5. Search Data.\n 6. Exit.");
     printf("\n\n Masukkan Pilihan : "); scanf("%d" ,&pil_menu);
@@ -249,5 +275,9 @@ int main(){
         system("cls");
         printf(" Inputan anda salah...\n Tekan enter untuk kembali ke menu...");
         getch(); goto menu; break;
+    }
+    } else {
+        printf("\n\n Anda tidak diijinkan mengakses aplikasi ini\n Tekan enter untuk menutup program ini ...");
+        getch(); return 0;
     }
 }
