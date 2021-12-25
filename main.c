@@ -79,34 +79,41 @@ int main(){
                 duplicate = true;
             }
         }
-        if(sc == false){
-            if(duplicate == false){
-                strcpy(db_nim, nim);
-                input_nama:
-                printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-                printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng); 
-                check_special_char(db_nama, 1);
-                if(sc_space == false){
-                    printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
-                    fprintf(db_main,"%s|%s|%s\n", db_nim, db_nama, db_kelas);  
-                    printf("\n --------------------\n");
-                    printf("\n Data Berhasil di Tambah.\n");
-                    printf("\n --------------------\n");
+        if(strlen(nim) == 17){
+            if(sc == false){
+                if(duplicate == false){
+                    strcpy(db_nim, nim);
+                    input_nama:
+                    printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
+                    printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng); 
+                    check_special_char(db_nama, 1);
+                    if(sc_space == false){
+                        printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
+                        fprintf(db_main,"%s|%s|%s\n", db_nim, db_nama, db_kelas);  
+                        printf("\n --------------------\n");
+                        printf("\n Data Berhasil di Tambah.\n");
+                        printf("\n --------------------\n");
+                    } else {
+                        printf("\n --------------------\n");
+                        printf("\n Inputan Nama Tidak diperbolehkan\n");
+                        printf(  " menggunakan spasi.\n");
+                        printf("\n --------------------\n");
+                    }
                 } else {
                     printf("\n --------------------\n");
-                    printf("\n Inputan Nama Tidak diperbolehkan");
-                    printf("\n menggunakan spasi.\n");
+                    printf("\n Inputan NIM Terdeteksi Duplikat.\n");
                     printf("\n --------------------\n");
                 }
             } else {
                 printf("\n --------------------\n");
-                printf("\n Inputan NIM Terdeteksi Duplikat.\n");
+                printf("\n Inputan NIM tidak diperbolehkan\n");
+                printf(  " menggunakan simbol.\n");
                 printf("\n --------------------\n");
             }
         } else {
             printf("\n --------------------\n");
-            printf("\n Inputan NIM tidak diperbolehkan\n");
-            printf(  " menggunakan simbol.\n");
+            printf("\n Inputan NIM harus lengkap\n");
+            printf(  " terdiri dari 17 karakter.\n");
             printf("\n --------------------\n");
         }
         fclose(db_main); fclose(db_main_r);
@@ -160,8 +167,8 @@ int main(){
                     system("cls");
                     printf(" === Update Data ===\n");
                     printf("\n --------------------\n");
-                    printf("\n Inputan Nama Tidak diperbolehkan");
-                    printf("\n menggunakan spasi.\n");
+                    printf("\n Inputan Nama Tidak diperbolehkan\n");
+                    printf(  " menggunakan spasi.\n");
                     printf("\n --------------------\n");
                     goto update_nama;
                 }
