@@ -15,14 +15,18 @@ char rev[99] = "rev2.0_demo";
 #include <windows.h>
 
 int pil_menu, jmlh_mhs, list;
-char logged_user[99];
-char nim[99], db_nim[99], db_nama[99], nama_blkng[99], db_kelas[99];
+char logged_user[99], logged_nim[99];
+char nim[99], user_nim[99], user_nama[99], user_kelas[99], user_pass[99], nama_blkng[99];
 FILE *db_main, *db_main_r, *db_main_w;
 bool duplicate, available, sc, sc_space;
-bool user_is_admin, user_is_mhs, user_allow;
+bool user_is_admin, user_allow;
+
+char default_pass[4] = "1234";
 
 void login(); void loading(); void uppercase(); void check_special_char();
 void db_create(); void db_view(); void db_update(); void db_delete(); void db_search();
+
+void db_user_view(); void db_user_pass();
 
 int main(){
 
@@ -44,8 +48,8 @@ int main(){
         printf("\n\n === Pilihan Menu ===\n\n");
         if(user_is_admin == true){
             printf(" 1. Create Data.\n 2. Show Data.\n 3. Update Data.\n 4. Delete Data.\n 5. Search Data.\n 0. Logout.");
-        } else if(user_is_mhs == true) {
-            printf(" 1. Show Data.\n 0. Logout.");
+        } else {
+            printf(" 1. Show Data.\n 2. Change Password.\n 0. Logout.");
         }
         printf("\n\n Masukkan Pilihan : "); scanf("%d" ,&pil_menu);
         if(user_is_admin == true){
@@ -58,9 +62,10 @@ int main(){
                 case 0: system("cls"); loading(0); goto panel;
                 default: system("cls"); printf(" Inputan anda salah...\n Tekan enter untuk kembali ke menu..."); getch(); goto menu; break;
             }
-        } else if (user_is_mhs == true){
+        } else {
             switch (pil_menu){
-                case 1: db_view(); goto menu; break;
+                case 1: db_user_view(); goto menu; break;
+                case 2: db_user_pass(); goto menu; break;
                 case 0: system("cls"); loading(0); goto panel;
                 default: system("cls"); printf(" Inputan anda salah...\n Tekan enter untuk kembali ke menu..."); getch(); goto menu; break;
             }
@@ -85,7 +90,7 @@ void loading(int logged){
 
 void login(){
     
-    user_is_admin = false; user_is_mhs = false;
+    user_is_admin = false; user_allow = false;
     char input_user[99], input_pass[99], admin_user[99], admin_pass[99];
     FILE *db_admin;
     db_admin = fopen("admin.db", "r"); db_main_r = fopen("mhs.db", "r");
@@ -105,10 +110,11 @@ void login(){
         }
     }
     
-    while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
-        if(strcmp(input_user, db_nim) == 0){
-            user_is_mhs = true; user_allow = true;
-            strcpy(logged_user, db_nama);
+    while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+        if(strcmp(input_user, user_nim) == 0 && strcmp(input_pass, user_pass) == 0){
+            user_is_admin = false; user_allow = true;
+            strcpy(logged_user, user_nama);
+            strcpy(logged_nim, user_nim);
         }
     }
 
@@ -155,22 +161,23 @@ system("cls");
         duplicate = false;
         printf(" === Create Data ===\n");
         printf("\n Input NIM Praktikan\t\t\t: "); fflush(stdin); scanf("%[^\n]" , nim); check_special_char(nim, 0);
-        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
-            if(strcmp(db_nim, nim) == 0){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, nim) == 0){
                 duplicate = true;
             }
         }
         if(strlen(nim) == 17){
             if(sc == false){
                 if(duplicate == false){
-                    strcpy(db_nim, nim);
+                    strcpy(user_nim, nim);
                     input_nama:
-                    printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-                    printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng); 
-                    check_special_char(db_nama, 1);
+                    printf("\n Input Nama Depan Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", user_nama);
+                    printf("\n Input Nama Belakang Praktikan\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(user_nama, nama_blkng); 
+                    check_special_char(user_nama, 1);
                     if(sc_space == false){
-                        printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , db_kelas); uppercase(db_kelas);
-                        fprintf(db_main,"%s|%s|%s\n", db_nim, db_nama, db_kelas);  
+                        printf("\n Input Kelas Pemrograman Dasar\t\t: "); fflush(stdin); scanf("%[^\n]" , user_kelas); uppercase(user_kelas);
+                        strcpy(user_pass, default_pass);
+                        fprintf(db_main,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);  
                         printf("\n --------------------------------------------------------\n");
                         printf("\n Data Berhasil di Tambah.\n");
                         printf("\n --------------------------------------------------------\n");
@@ -207,12 +214,12 @@ void db_view(){
         int no_urut = 0; available = false;
         db_main_r = fopen("mhs.db", "r");
         printf("\n === List Data ===\n\n");
-        while (fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
+        while (fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
             no_urut++; available = true;
             printf(" == %d ==", no_urut);
-            printf("\n\n NIM Praktikan\t\t\t: %s", db_nim);
-            printf("\n\n Nama Praktikan\t\t\t: %s", db_nama);
-            printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas);
+            printf("\n\n NIM Praktikan\t\t\t: %s", user_nim);
+            printf("\n\n Nama Praktikan\t\t\t: %s", user_nama);
+            printf("\n\n Kelas Pemrograman Dasar\t: %s", user_kelas);
             printf("\n\n --------------------------------------------------------\n\n");
         }
 
@@ -233,16 +240,16 @@ void db_update(){
         available = false;
         printf(" === Update Data ===\n\n");
         printf(" Masukkan NIM Praktikan yang Ingin di Edit Data nya : "); scanf("%s",nim);
-        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
-            if(strcmp(db_nim, nim) == 0){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, nim) == 0){
                 available = true;
                 update_nama:
-                printf("\n Nama Depan Baru\t\t: "); fflush(stdin); scanf("%[^\n]", db_nama);
-                printf("\n Nama Belakang Baru\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(db_nama, nama_blkng);
-                check_special_char(db_nama, 1);
+                printf("\n Nama Depan Baru\t\t: "); fflush(stdin); scanf("%[^\n]", user_nama);
+                printf("\n Nama Belakang Baru\t\t: "); fflush(stdin); scanf("%[^\n]", nama_blkng); strcat(user_nama, nama_blkng);
+                check_special_char(user_nama, 1);
                 if(sc_space == false){
-                    printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", db_kelas); uppercase(db_kelas);
-                    fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
+                    printf("\n Kelas Baru\t\t\t: "); fflush(stdin); scanf("%[^\n]", user_kelas); uppercase(user_kelas);
+                    fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
                     printf("\n --------------------------------------------------------\n");
                     printf("\n Data Berhasil di Edit.\n");
                     printf("\n --------------------------------------------------------\n");
@@ -257,7 +264,7 @@ void db_update(){
                 }
                 
             } else {
-                fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
+                fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
             }
         }
         if(available == false){
@@ -277,10 +284,10 @@ void db_delete(){
         available = false;
         printf(" === Delete Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
-        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
-            if(strcmp(db_nim, nim) != 0){
-                fprintf(db_main_w,"%s|%s|%s\n", db_nim, db_nama, db_kelas);
-            } else if (strcmp(db_nim, nim) != 1){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, nim) != 0){
+                fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
+            } else if (strcmp(user_nim, nim) != 1){
                 available = true;
                 printf("\n --------------------------------------------------------\n");
                 printf("\n Data Berhasil di Hapus.\n");
@@ -306,12 +313,12 @@ void db_search(){
         available = false;
         printf(" === Search Data ===\n\n");
         printf(" Masukkan NIM Praktikan : "); scanf("%s", nim);
-        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^\n]\n", db_nim, db_nama, db_kelas) != EOF){
-            if(strcmp(db_nim, nim) == 0){
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, nim) == 0){
                 available = true;
-                printf("\n\n NIM Praktikan\t\t\t: %s", db_nim);
-                printf("\n\n Nama Praktikan\t\t\t: %s", db_nama);
-                printf("\n\n Kelas Pemrograman Dasar\t: %s", db_kelas);
+                printf("\n\n NIM Praktikan\t\t\t: %s", user_nim);
+                printf("\n\n Nama Praktikan\t\t\t: %s", user_nama);
+                printf("\n\n Kelas Pemrograman Dasar\t: %s", user_kelas);
             }
         }
         if(available == false){
@@ -322,4 +329,79 @@ void db_search(){
         fclose(db_main_r);
         printf("\n\n Tekan enter untuk kembali ke menu...");
         getch();
+}
+
+
+// User Function
+void db_user_view(){
+    system("cls");
+        db_main_r = fopen("mhs.db", "r");
+        available = false;
+        printf(" === User Information ===");
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, logged_nim) == 0){
+                available = true;
+                printf("\n\n NIM Praktikan\t\t\t: %s", user_nim);
+                printf("\n\n Nama Praktikan\t\t\t: %s", user_nama);
+                printf("\n\n Kelas Pemrograman Dasar\t: %s", user_kelas);
+            }
+        }
+        if(available == false){
+            printf("\n --------------------------------------------------------\n");
+            printf("\n Data Tidak di Temukan.\n");
+            printf("\n --------------------------------------------------------");
+        }
+        fclose(db_main_r);
+        printf("\n\n Tekan enter untuk kembali ke menu...");
+        getch();
+}
+
+void db_user_pass(){
+    system("cls");
+    
+        char user_update_pass_old[99];
+        char user_update_pass_new[99];
+        char user_update_pass_new_conf[99];
+
+        db_main_r = fopen("mhs.db", "r"); db_main_w = fopen("mhs_temp.db", "w");
+        available = false;
+        printf(" === Update Data ===\n\n");
+        while(fscanf(db_main_r, "%[^|]|%[^|]|%[^|]|%[^\n]\n", user_nim, user_pass, user_nama, user_kelas) != EOF){
+            if(strcmp(user_nim, logged_nim) == 0){
+                available = true;
+                printf("\n Input Password Lama\t\t: "); fflush(stdin); scanf("%[^\n]", user_update_pass_old);
+                if(strcmp(user_pass, user_update_pass_old) == 0){
+                    printf("\n Input Password Baru\t\t: "); fflush(stdin); scanf("%[^\n]", user_update_pass_new);
+                    printf("\n Input Password Baru Lagi\t\t: "); fflush(stdin); scanf("%[^\n]", user_update_pass_new_conf);
+                    if(strcmp(user_update_pass_new, user_update_pass_new_conf) == 0){
+                        strcpy(user_pass, user_update_pass_new_conf);
+                        fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
+                        printf("\n --------------------------------------------------------\n");
+                        printf("\n Password Berhasil di Update.\n");
+                        printf("\n --------------------------------------------------------\n");
+                    } else {
+                        fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
+                        printf("\n --------------------------------------------------------\n");
+                        printf("\n Gagal mengkonfirmasi password baru.\n");
+                        printf("\n --------------------------------------------------------\n");
+                    }
+                } else {
+                    fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
+                    printf("\n --------------------------------------------------------\n");
+                    printf("\n Password lama salah.\n");
+                    printf("\n --------------------------------------------------------\n");
+                }
+            } else {
+                fprintf(db_main_w,"%s|%s|%s|%s\n", user_nim, user_pass, user_nama, user_kelas);
+            }
+        }
+        if(available == false){
+            printf("\n --------------------------------------------------------\n");
+            printf("\n Data Tidak Tersedia.\n");
+            printf("\n --------------------------------------------------------\n");
+        }
+        fclose(db_main_r); fclose(db_main_w);
+        remove("mhs.db"); rename("mhs_temp.db", "mhs.db");
+        printf("\n Tekan enter untuk kembali ke menu...");
+        getch(); 
 }
